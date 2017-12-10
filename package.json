@@ -38,6 +38,8 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^3.0.1",
     "nodemon": "^1.11.0",
-    "scmp": "^2.0.0"
+    "raw-body": "^2.3.2",
+    "scmp": "^2.0.0",
+    "xml2js": "^0.4.19"
   }
 }

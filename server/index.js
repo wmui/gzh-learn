@@ -1,14 +1,13 @@
 import Koa from 'koa'
 import { Nuxt, Builder } from 'nuxt'
 import Router from 'koa-router'
-import sha1 from 'sha1'
 import mongoose from 'mongoose'
 import fs from 'fs'
 import { resolve } from 'path'
 import config from './config'
-
+import wechatMiddle from './wechat/middleware'
+import reply from './wechat/reply'
 const router = new Router()
-const token = config.wechat.token
 const models = resolve(__dirname, './database/schema')
 
 // 同步读取文件
@@ -30,24 +29,7 @@ mongoose.connection.on('open', () => {
   console.log('数据库链接成功：', config.db)
 })
 
-router.get('/wechat-hear', (ctx, next) => {
-  // 必须在数据库初始化完成后引入wechat
-  require('./wechat')
-  const {
-    signature,
-    nonce,
-    timestamp,
-    echostr
-  } = ctx.query
-  const str = [token, timestamp, nonce].sort().join('')
-  const sha = sha1(str)
-  // console.log(sha === signature)
-  if (sha === signature) {
-    ctx.body = echostr
-  } else {
-    ctx.body = 'signature error'
-  }
-})
+router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
 
 async function start () {
   const app = new Koa()
