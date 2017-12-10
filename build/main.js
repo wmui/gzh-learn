@@ -65,7 +65,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -97,6 +97,7 @@ module.exports = {
 
 "use strict";
 /* harmony default export */ exports["a"] = {
+  db: 'mongodb://localhost/gzh',
   wechat: {
     appID: 'wx774a3a23bf9750bb',
     appsecret: '39851b4ed2ba8710a14a1574968a885c',
@@ -108,56 +109,93 @@ module.exports = {
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(7);
+module.exports = __webpack_require__(11);
 
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
-module.exports = require("koa");
+function webpackEmptyContext(req) {
+	throw new Error("Cannot find module '" + req + "'.");
+}
+webpackEmptyContext.keys = function() { return []; };
+webpackEmptyContext.resolve = webpackEmptyContext;
+module.exports = webpackEmptyContext;
+webpackEmptyContext.id = 3;
+
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-router");
+module.exports = require("fs");
 
 /***/ },
 /* 5 */
 /***/ function(module, exports) {
 
-module.exports = require("nuxt");
+module.exports = require("koa");
 
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
 
-module.exports = require("sha1");
+module.exports = require("koa-router");
 
 /***/ },
 /* 7 */
 /***/ function(module, exports) {
 
-module.exports = require("regenerator-runtime");
+module.exports = require("mongoose");
 
 /***/ },
 /* 8 */
+/***/ function(module, exports) {
+
+module.exports = require("nuxt");
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+module.exports = require("path");
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+module.exports = require("sha1");
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+module.exports = require("regenerator-runtime");
+
+/***/ },
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(__dirname) {Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_D_learn_gzh_learn_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_D_learn_gzh_learn_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_D_learn_gzh_learn_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_koa__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_koa__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_koa___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_koa__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_nuxt__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_nuxt__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_nuxt__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_koa_router__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_koa_router__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_koa_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_koa_router__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sha1__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sha1__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sha1___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_sha1__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__config__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_mongoose__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_mongoose___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_mongoose__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_fs__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_fs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_fs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_path__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_path__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__config__ = __webpack_require__(1);
 
 
 var start = function () {
@@ -172,6 +210,7 @@ var start = function () {
             app = new __WEBPACK_IMPORTED_MODULE_1_koa___default.a();
             host = process.env.HOST || '127.0.0.1';
             port = process.env.PORT || 3006;
+
 
             app.use(router.routes());
             app.use(router.allowedMethods());
@@ -251,8 +290,31 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 
+
+
+
 var router = new __WEBPACK_IMPORTED_MODULE_3_koa_router___default.a();
-var token = __WEBPACK_IMPORTED_MODULE_5__config__["a" /* default */].wechat.token;
+var token = __WEBPACK_IMPORTED_MODULE_8__config__["a" /* default */].wechat.token;
+var models = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_path__["resolve"])(__dirname, './database/schema');
+// 同步读取文件
+__WEBPACK_IMPORTED_MODULE_6_fs___default.a.readdirSync(models).forEach(function (file) {
+  return !(function webpackMissingModule() { var e = new Error("Cannot find module \".\""); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+});
+// 开启debug
+__WEBPACK_IMPORTED_MODULE_5_mongoose___default.a.set('debug', true);
+// 链接数据库
+__WEBPACK_IMPORTED_MODULE_5_mongoose___default.a.connect(__WEBPACK_IMPORTED_MODULE_8__config__["a" /* default */].db);
+// 链接中断重新链接
+__WEBPACK_IMPORTED_MODULE_5_mongoose___default.a.connection.on('disconnected', function () {
+  __WEBPACK_IMPORTED_MODULE_5_mongoose___default.a.connect(__WEBPACK_IMPORTED_MODULE_8__config__["a" /* default */].db);
+});
+__WEBPACK_IMPORTED_MODULE_5_mongoose___default.a.connection.on('error', function (err) {
+  console.error(err);
+});
+__WEBPACK_IMPORTED_MODULE_5_mongoose___default.a.connection.on('open', function () {
+  console.log('数据库链接成功：', __WEBPACK_IMPORTED_MODULE_8__config__["a" /* default */].db);
+});
+
 router.get('/wechat-hear', function (ctx, next) {
   var _ctx$query = ctx.query,
       signature = _ctx$query.signature,
@@ -262,7 +324,7 @@ router.get('/wechat-hear', function (ctx, next) {
 
   var str = [token, timestamp, nonce].sort().join('');
   var sha = __WEBPACK_IMPORTED_MODULE_4_sha1___default()(str);
-  console.log(sha === signature);
+  // console.log(sha === signature)
   if (sha === signature) {
     ctx.body = echostr;
   } else {
@@ -270,8 +332,8 @@ router.get('/wechat-hear', function (ctx, next) {
   }
 });
 
-
 start();
+/* WEBPACK VAR INJECTION */}.call(exports, "server"))
 
 /***/ }
 /******/ ]);
