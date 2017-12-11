@@ -21,7 +21,7 @@ export default class Wechat {
     options = Object.assign({}, options, {json: true})
     try {
       const response = await request(options)
-      console.log(response)
+      console.log('wechat.js:' + response)
       return response
     } catch (error) {
       console.error(error)
@@ -46,7 +46,7 @@ export default class Wechat {
     const data = await this.request({url: url})
     const now = Date.now()
     // 提前20毫秒缓冲时间
-    const expiresIn = now + (data.expires_in - 20) * 1000
+    const expiresIn = now + (data.expires_in - 200) * 1000
 
     data.expires_in = expiresIn
 
