@@ -47,11 +47,12 @@ function formatMessage (result) {
 
 function tpl (content, message) {
   let type = 'text'
-
+  // 只有图文消息是数组
   if (Array.isArray(content)) {
     type = 'news'
   }
 
+  // content是用户回复消息后，我的服务器处理消息后返回的数据
   if (!content) {
     content = 'Empty News'
   }
@@ -67,7 +68,7 @@ function tpl (content, message) {
     toUserName: message.FromUserName,
     fromUserName: message.ToUserName
   })
-
+  // 需要把json消息转为xml格式返回
   return template(info)
 }
 

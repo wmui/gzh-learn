@@ -34,7 +34,7 @@ export default function(opt, reply) {
         limit: '1mb',
         encoding: ctx.charset
       })
-      // console.log('middleware.js data:')
+
       // Buffer数据
       // console.log(data) 
 
@@ -75,7 +75,7 @@ export default function(opt, reply) {
 
       // msg和message信息是一样的
       const msg = ctx.weixin
-      // ('2', {ToUserName: 'gh_0fa46f0b76c8'}) 这里有疑问，编译原理？
+      // 把replyBody消息处理为符合微信要求的xml格式。之所以要传msg，是为了拿到FromUserName和ToUserName
       const xml = util.tpl(replyBody, msg)
       // console.log(xml)
       /*<xml>

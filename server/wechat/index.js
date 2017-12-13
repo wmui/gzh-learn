@@ -10,7 +10,13 @@ const wechatConfig = {
     appID: config.wechat.appID,
     appSecret: config.wechat.appSecret,
     token: config.wechat.token,
-    // 数据库操作是异步的
+    // 数据库操作是异步的，拿到一个promise函数
+    // 调用后返回结果如下： 
+    // {
+    //   name: 'access_token',
+    //   token: data.access_token,
+    //   expires_in: data.expires_in
+    // }
     getAccessToken: async () => await Token.getAccessToken(),
     saveAccessToken: async (data) => await Token.saveAccessToken(data)
   }
@@ -21,4 +27,4 @@ export const getWechat = () => {
   return wechatClient
 }
 
-getWechat()
+// getWechat()

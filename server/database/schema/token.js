@@ -31,6 +31,7 @@ TokenSchema.pre('save', function (next) {
   next()
 })
 
+// statics定义model的静态方法
 TokenSchema.statics = {
   async getAccessToken () {
     const result = await this.findOne({

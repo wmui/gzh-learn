@@ -30,6 +30,14 @@ mongoose.connection.on('open', () => {
 })
 
 router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
+// 素材上传测试
+router.get('/wechat', async (ctx, next) => {
+  let mp = require('./wechat/index.js')
+  let client = mp.getWechat()
+
+  let data = await client.handle('uploadMaterial', 'video', resolve(__dirname, '../ice.mp4'))
+  console.log(data)
+})
 
 async function start () {
   const app = new Koa()
