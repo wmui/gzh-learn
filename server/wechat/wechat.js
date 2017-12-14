@@ -105,7 +105,14 @@ export default class Wechat {
 
     return data
   }
-
+  /**
+   * [uploadMaterial description]
+   * @param  {[type]} token     access_token
+   * @param  {[type]} type      素材类型如video,image
+   * @param  {[type]} material  素材的绝对路径
+   * @param  {[type]} permanent 传入该参数表示永久素材，不传为临时素材
+   * @return {[type]}           [description]
+   */
   uploadMaterial (token, type, material, permanent) {
     let form = {}
     let url = api.temporary.upload
@@ -115,7 +122,7 @@ export default class Wechat {
 
       _.extend(form, permanent)
     }
-
+    console.log(form)
     if (type === 'pic') {
       url = api.permanent.uploadNewsPic
     }

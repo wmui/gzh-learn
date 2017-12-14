@@ -30,12 +30,46 @@ mongoose.connection.on('open', () => {
 })
 
 router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
-// 素材上传测试
 router.get('/wechat', async (ctx, next) => {
   let mp = require('./wechat/index.js')
   let client = mp.getWechat()
 
-  let data = await client.handle('uploadMaterial', 'video', resolve(__dirname, '../ice.mp4'))
+  // 临时视频测试
+  // let data = await client.handle('uploadMaterial', 'video', resolve(__dirname, '../ice.mp4'))
+  
+  // 永久视频
+  /*let data = await client.handle('uploadMaterial', 'video', resolve(__dirname, '../ice.mp4'), {
+    type: 'video',
+    description: '{"title": "永久视频","introduction": "wmui"}'
+  })*/
+  /*{ type: 'video',
+  description: '{"title": "永久视频","introduction": "wmui"}' }
+  { media_id: 'IHkqesLxVBXIN5WhWWbXxTPmLS4ei88lM1R6cGT-UVM' }*/
+
+  // 永久图片
+  /*let data = await client.handle('uploadMaterial', 'image', resolve(__dirname, '../ice.jpeg'), {
+    type: 'image'
+  })*/
+  /*{ type: 'image' }
+  { media_id: 'IHkqesLxVBXIN5WhWWbXxZUAd2MRcUoNANWZfQDI37s',
+  url: 'http://mmbiz.qpic.cn/mmbiz_jpg/Rs0FIicPCFbvqvDvlK5THBPicV5YoYoRD5y5aoTR7ysStkAZgeAQw9bT9rTrHEhkBQ71gqk2EHTJupceoOSBswVQ/0?wx_fmt=jpeg' }*/
+
+  // 临时图片
+  // let data = await client.handle('uploadMaterial', 'image', resolve(__dirname, '../ice.jpeg'))
+  
+  // 图文测试  { media_id: 'IHkqesLxVBXIN5WhWWbXxY-hdgJDeE--mszBUxA7qHE' }
+  /* const news = {
+    articles: [{
+      "title": '文章标题',
+      "thumb_media_id": 'IHkqesLxVBXIN5WhWWbXxZUAd2MRcUoNANWZfQDI37s',
+      "author": 'wmui',
+      "digest": '文章摘要',
+      "show_cover_pic": 1,
+      "content": '文章内容',
+      "content_source_url": 'https://github.com/wmui'
+    }]
+  }
+  let data = await client.handle('uploadMaterial', 'news', news, {}) */
   console.log(data)
 })
 
