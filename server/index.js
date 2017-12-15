@@ -32,27 +32,15 @@ mongoose.connection.on('open', () => {
 router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
 router.get('/wechat', async (ctx, next) => {
   let mp = require('./wechat/index.js')
+  // 用require引 export default 导出的组件还要加个require().default
+  let menu = require('./wechat/menu.js').default
   let client = mp.getWechat()
 
-  // 创建标签测试 { tag: { id: 100, name: 'ssr' } }
-  // let data = await client.handle('createTag', 'ssr')
- 
-  // 获取用户列表 
-  /* { total: 1,
-  count: 1,
-  data: { openid: [ 'oFmK60iOdfVp-hJx2K_AXG1IH-jM' ] },
-  next_openid: 'oFmK60iOdfVp-hJx2K_AXG1IH-jM' } */
-  // let data = await client.handle('fetchUserList')
-
   // 获取多用户信息
-  /*let data = await client.handle('batchUserInfo',[
-    {
-      openid: 'oFmK60iOdfVp-hJx2K_AXG1IH-jM',
-    lang: 'zh_CN'
-  }])*/
+  let data = await client.handle('createMenu', menu)
   
 
-  // console.log(data)
+  console.log(data)
 })
 
     

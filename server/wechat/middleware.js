@@ -77,7 +77,8 @@ export default function(opt, reply) {
       const msg = ctx.weixin
       // 把replyBody消息处理为符合微信要求的xml格式。之所以要传msg，是为了拿到FromUserName和ToUserName
       const xml = util.tpl(replyBody, msg)
-      // console.log(xml)
+      console.log('middleware.js 80 line:')
+      console.log(xml)
       /*<xml>
         <ToUserName><![CDATA[oFmK60iOdfVp-hJx2K_AXG1IH-jM]]></ToUserName>
         <FromUserName><![CDATA[gh_0fa46f0b76c8]]></FromUserName>

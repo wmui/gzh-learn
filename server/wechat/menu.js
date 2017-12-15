@@ -19,9 +19,9 @@ export default {
       'key': 'photo'
     }]
   }, {
-    'name': '冰火家族',
+    'name': 'GitHub',
     'type': 'view',
-    'url': 'http://coding.imooc.com'
+    'url': 'https://github.com/wmui'
   }, {
     'name': '最新资源',
     'type': 'location_select',

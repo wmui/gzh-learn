@@ -363,17 +363,17 @@ export default class Wechat {
     return {url: url}
   }
 
-    createMenu (token, menu) {
-    const url = api.menu.create + 'access_token=' + token
-
-    return {method: 'POST', url: url, body: menu}
-  }
 
   /**
    * 菜单管理
    * @param  {[type]} token [description]
    * @return {[type]}       [description]
    */
+  createMenu (token, menu) {
+    const url = api.menu.create + 'access_token=' + token
+
+    return {method: 'POST', url: url, body: menu}
+  }
   getMenu (token) {
     const url = api.menu.get + 'access_token=' + token
 
