@@ -2,6 +2,7 @@ import request from 'request-promise'
 import fs from 'fs'
 import * as _ from 'lodash'
 import path from 'path'
+import { sign } from './util'
 
 const base = 'https://api.weixin.qq.com/cgi-bin/'
 const api = {
@@ -60,10 +61,16 @@ export default class Wechat {
     this.appSecret = opts.appSecret
     this.getAccessToken = opts.getAccessToken
     this.saveAccessToken = opts.saveAccessToken
+    this.getTicket = opts.getTicket
+    this.saveTicket = opts.saveTicket
 
     this.fetchAccessToken()
   }
-
+  /**
+   * 用于向微信服务器发送请求
+   * @param  {[type]} options [description]
+   * @return {[type]}         [description]
+   */
   async request (options) {
     // 必须序列化为json,request-promise的锅
     options = Object.assign({}, options, {json: true})
@@ -75,7 +82,10 @@ export default class Wechat {
       console.error(error)
     }
   }
-
+  /**
+   * token的获取，更新和验证管理
+   * @return {[type]} [description]
+   */
   async fetchAccessToken () {
     let data = await this.getAccessToken()
     // access_token如果过期者更新
@@ -95,6 +105,36 @@ export default class Wechat {
     const now = Date.now()
     // 提前200毫秒缓冲时间
     const expiresIn = now + (data.expires_in - 200) * 1000
+
+    data.expires_in = expiresIn
+
+    return data
+  }
+
+
+  /**
+   * ticket的获取和更新管理
+   * @param  {[type]} token [description]
+   * @return {[type]}       [description]
+   */
+  async fetchTicket (token) {
+    let data = await this.getTicket()
+
+    if (!this.isValidToken(data, 'ticket')) {
+      data = await this.updateTicket(token)
+    }
+
+    await this.saveTicket(data)
+
+    return data
+  }
+
+  async updateTicket (token) {
+    const url = api.ticket.get + '&access_token=' + token + '&type=jsapi'
+
+    let data = await this.request({url: url})
+    const now = (new Date().getTime())
+    const expiresIn = now + (data.expires_in - 20) * 1000
 
     data.expires_in = expiresIn
 
@@ -409,5 +449,10 @@ export default class Wechat {
     const url = api.menu.getInfo + 'access_token=' + token
 
     return {url: url}
+  }
+
+  // ticket签名算法
+  sign (ticket, url) {
+    return sign(ticket, url)
   }
 }
