@@ -7,25 +7,20 @@ const TicketSchema = new mongoose.Schema({
   ticket: String,
   expires_in: Number,
   meta: {
-    // ticket的创建时间
     createdAt: {
       type: Date,
       default: Date.now()
     },
-    // ticket更新时间
     updatedAt: {
       type: Date,
       default: Date.now()
     }
   }
 })
-// 向数据库插入数据前执行的回掉
 TicketSchema.pre('save', function (next) {
   if (this.isNew) {
-    // 新ticket
     this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
-    // ticket已存在，更新ticket
     this.meta.updatedAt = Date.now()
   }
   next()

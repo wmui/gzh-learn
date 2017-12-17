@@ -11,7 +11,10 @@ const router = new Router()
 const models = resolve(__dirname, './database/schema')
 
 // 同步读取文件
-fs.readdirSync(models).forEach(file => require(resolve(models, file)))
+fs.readdirSync(models).forEach((file) => {
+  console.log(file)
+  return require(resolve(__dirname, `./database/schema/${file}`))
+})
 // 开启debug
 mongoose.set('debug', true)
 // 链接数据库
@@ -28,22 +31,16 @@ mongoose.connection.on('error', err => {
 mongoose.connection.on('open', () => {
   console.log('数据库链接成功：', config.db)
 })
-
+let wechat = require('./controllers/wechat')
 router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
-router.get('/wechat', async (ctx, next) => {
+/*router.get('/wechat', async (ctx, next) => {
   let mp = require('./wechat/index.js')
-  // 用require引 export default 导出的组件还要加个require().default
   let menu = require('./wechat/menu.js').default
   let client = mp.getWechat()
-
-  // 获取多用户信息
   let data = await client.handle('createMenu', menu)
-  
-
   console.log(data)
-})
-
-    
+})*/
+router.get('/wechat-signature', wechat.signature)
 async function start () {
   const app = new Koa()
   const host = process.env.HOST || '127.0.0.1'
