@@ -1,4 +1,5 @@
 export default {
+  SITE_ROOT_URL: 'http://wmuigzh.free.ngrok.cc',
   db: 'mongodb://localhost/gzh',
   wechat: {
     appID: 'wx774a3a23bf9750bb',

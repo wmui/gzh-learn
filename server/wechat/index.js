@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import config from '../config'
 import Wechat from './wechat.js'
+import OAuth from './oauth.js'
 
 const Token = mongoose.model('Token')
 const Ticket = mongoose.model('Ticket')
@@ -21,4 +22,9 @@ const wechatConfig = {
 export const getWechat = () => {
   const wechatClient = new Wechat(wechatConfig.wechat)
   return wechatClient
+}
+
+export const getOAuth = () => {
+  const oauthClient = new OAuth(wechatConfig.wechat)
+  return oauthClient
 }

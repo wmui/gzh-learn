@@ -40,7 +40,16 @@ router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
   let data = await client.handle('createMenu', menu)
   console.log(data)
 })*/
+
+// 客户端发起了js sdk调用
 router.get('/wechat-signature', wechat.signature)
+
+// 发起登录请求  http://wmuigzh.free.ngrok.cc/wechat-redirect?visit=1&id=2
+router.get('/wechat-redirect', wechat.redirect)
+
+// 用户同意登录后，后端会执行重定向到http://wmuigzh.free.ngrok.cc/oauth
+// 前端在此刻向wechat-oauth发送请求，拿到用户信息
+router.get('/wechat-oauth', wechat.oauth)
 async function start () {
   const app = new Koa()
   const host = process.env.HOST || '127.0.0.1'
