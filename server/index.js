@@ -4,6 +4,7 @@ import Router from 'koa-router'
 import mongoose from 'mongoose'
 import fs from 'fs'
 import { resolve } from 'path'
+import R from 'ramda'
 import config from './config'
 import wechatMiddle from './wechat/middleware'
 import reply from './wechat/reply'
@@ -12,9 +13,19 @@ const models = resolve(__dirname, './database/schema')
 
 // 同步读取文件
 fs.readdirSync(models).forEach((file) => {
-  console.log(file)
+  // console.log(file)
   return require(resolve(__dirname, `./database/schema/${file}`))
 })
+
+const formatData = R.map(i => {
+  i._id = i.nmId
+  return i
+})
+
+let wikiCharacters = require(resolve(__dirname, './database/json/completeCharacters.json'))
+let wikiHouses = require(resolve(__dirname, './database/json/completeHouses.json'))
+wikiCharacters = formatData(wikiCharacters)
+
 // 开启debug
 mongoose.set('debug', true)
 // 链接数据库
@@ -28,10 +39,21 @@ mongoose.connection.on('error', err => {
   console.error(err)
 })
 // 连接成功
-mongoose.connection.on('open', () => {
+mongoose.connection.on('open', async () => {
   console.log('数据库链接成功：', config.db)
+  const WikiHouse = mongoose.model('WikiHouse')
+  const WikiCharacter = mongoose.model('WikiCharacter')
+
+  const existWikiHouses = await WikiHouse.find({}).exec()
+  const existWikiCharacters = await WikiCharacter.find({}).exec()
+
+  if (!existWikiHouses.length) WikiHouse.insertMany(wikiHouses)
+  if (!existWikiCharacters.length) WikiCharacter.insertMany(wikiCharacters)
 })
+
 let wechat = require('./controllers/wechat')
+let wiki = require('./controllers/wiki')
+
 router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
 /*router.get('/wechat', async (ctx, next) => {
   let mp = require('./wechat/index.js')
@@ -41,6 +63,9 @@ router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
   console.log(data)
 })*/
 
+/**
+ * wechat api
+ */
 // 客户端发起了js sdk调用
 router.get('/wechat-signature', wechat.signature)
 
@@ -50,6 +75,15 @@ router.get('/wechat-redirect', wechat.redirect)
 // 用户同意登录后，后端会执行重定向到http://wmuigzh.free.ngrok.cc/oauth
 // 前端在此刻向wechat-oauth发送请求，拿到用户信息
 router.get('/wechat-oauth', wechat.oauth)
+
+/**
+ * wiki api
+ */
+router.get('/houses', wiki.getHouses)
+router.get('/house/:_id', wiki.getHouse)
+router.get('/characters', wiki.getCharacters)
+router.get('/characters/:_id', wiki.getCharacter)
+
 async function start () {
   const app = new Koa()
   const host = process.env.HOST || '127.0.0.1'

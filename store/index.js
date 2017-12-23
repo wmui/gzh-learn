@@ -6,6 +6,9 @@ import actions from './actions'
 export default () => {
   return new Vuex.Store({
     state: {
+			characters: [],
+			cities: [],
+			houses:[]
     },
     getters,
     mutations,
