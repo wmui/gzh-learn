@@ -6,8 +6,8 @@ import actions from './actions'
 export default () => {
   return new Vuex.Store({
     state: {
+      imageCDN: 'http://osmai097y.bkt.clouddn.com/',
 			characters: [],
-			cities: [],
 			houses:[]
     },
     getters,

@@ -47,4 +47,3 @@ export async function getCharacter (_id) {
 
   return data
 }
-

@@ -79,10 +79,10 @@ router.get('/wechat-oauth', wechat.oauth)
 /**
  * wiki api
  */
-router.get('/houses', wiki.getHouses)
-router.get('/house/:_id', wiki.getHouse)
-router.get('/characters', wiki.getCharacters)
-router.get('/characters/:_id', wiki.getCharacter)
+router.get('/wiki/houses', wiki.getHouses)
+router.get('/wili/house/:_id', wiki.getHouse)
+router.get('/wiki/characters', wiki.getCharacters)
+router.get('/wiki/characters/:_id', wiki.getCharacter)
 
 async function start () {
   const app = new Koa()

@@ -12,12 +12,12 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
-    script: [{src: 'http://res.wx.qq.com/open/js/jweixin-1.2.0.js'}]
+    script: [{ src: 'http://res.wx.qq.com/open/js/jweixin-1.2.0.js' }]
   },
   /*
   ** Global CSS
   */
-  css: ['~assets/css/main.css'],
+  css: [{src: 'static/sass/base.sass', lang: 'sass?indentedSyntax=true'}],
   /*
   ** Customize the progress-bar color
   */
