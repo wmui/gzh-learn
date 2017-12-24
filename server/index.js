@@ -53,9 +53,10 @@ mongoose.connection.on('open', async () => {
 
 let wechat = require('./controllers/wechat')
 let wiki = require('./controllers/wiki')
+let product = require('./controllers/product')
 
 router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
-/*router.get('/wechat', async (ctx, next) => {
+/* router.get('/wechat', async (ctx, next) => {
   let mp = require('./wechat/index.js')
   let menu = require('./wechat/menu.js').default
   let client = mp.getWechat()
@@ -83,6 +84,15 @@ router.get('/wiki/houses', wiki.getHouses)
 router.get('/wiki/characters', wiki.getCharacters)
 router.get('/wiki/house/:_id', wiki.getHouse)
 router.get('/wiki/character/:_id', wiki.getCharacter)
+
+/**
+ * product api
+ */
+router.get('/shop/products', product.getProducts)
+router.get('/shop/product/_id', product.getProduct)
+router.post('/shop/product', product.postProduct)
+router.patch('/shop/product', product.patchProduct)
+router.delete('/shop/product', product.delProduct)
 
 async function start () {
   const app = new Koa()
