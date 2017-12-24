@@ -20,9 +20,16 @@ export default {
     state.houses = data.data
     return data
   },
+
   async showCharacter ({state}, id) {
     const { data } = await axios.get(`${baseUrl}/wiki/character/${id}`)
     state.currentCharacter = data.data
+    return data
+  },
+
+  async showHouse ({state}, id) {
+    const { data } = await axios.get(`${baseUrl}/wiki/house/${id}`)
+    state.currentHouse = data.data
     return data
   }
 }

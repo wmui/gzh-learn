@@ -12,7 +12,7 @@ export async function getHouse(ctx, next) {
   const { _id } = params
 
   if (!_id) return (ctx.body = { succes: false, err: '_id is required' })
-
+  // console.log(_id)
   const data = await api.wiki.getHouse(_id)
 
   ctx.body = {

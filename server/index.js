@@ -80,8 +80,8 @@ router.get('/wechat-oauth', wechat.oauth)
  * wiki api
  */
 router.get('/wiki/houses', wiki.getHouses)
-router.get('/wili/house/:_id', wiki.getHouse)
 router.get('/wiki/characters', wiki.getCharacters)
+router.get('/wiki/house/:_id', wiki.getHouse)
 router.get('/wiki/character/:_id', wiki.getCharacter)
 
 async function start () {

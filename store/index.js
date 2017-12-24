@@ -9,7 +9,8 @@ export default () => {
       imageCDN: 'http://osmai097y.bkt.clouddn.com/',
       characters: [],
       houses: [],
-      currentCharacter: {}
+      currentCharacter: {},
+      currentHouse: {}
     },
     getters,
     mutations,
