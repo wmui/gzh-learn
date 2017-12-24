@@ -12,7 +12,11 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
-    script: [{ src: 'http://res.wx.qq.com/open/js/jweixin-1.2.0.js' }]
+    script: [{
+      src: 'http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js'
+    }, {
+      src: 'http://res.wx.qq.com/open/js/jweixin-1.2.0.js'
+    }]
   },
   /*
   ** Global CSS

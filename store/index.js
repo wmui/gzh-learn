@@ -7,8 +7,9 @@ export default () => {
   return new Vuex.Store({
     state: {
       imageCDN: 'http://osmai097y.bkt.clouddn.com/',
-			characters: [],
-			houses:[]
+      characters: [],
+      houses: [],
+      currentCharacter: {}
     },
     getters,
     mutations,

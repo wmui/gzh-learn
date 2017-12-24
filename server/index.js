@@ -61,7 +61,7 @@ router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
   let client = mp.getWechat()
   let data = await client.handle('createMenu', menu)
   console.log(data)
-})*/
+}) */
 
 /**
  * wechat api
@@ -82,7 +82,7 @@ router.get('/wechat-oauth', wechat.oauth)
 router.get('/wiki/houses', wiki.getHouses)
 router.get('/wili/house/:_id', wiki.getHouse)
 router.get('/wiki/characters', wiki.getCharacters)
-router.get('/wiki/characters/:_id', wiki.getCharacter)
+router.get('/wiki/character/:_id', wiki.getCharacter)
 
 async function start () {
   const app = new Koa()
