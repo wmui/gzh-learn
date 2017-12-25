@@ -60,10 +60,10 @@ export async function patchProduct (ctx, next) {
 
   // 更新商品
   try {
-    product = await api.product.updateProduct(product)
+    body = await api.product.updateProduct(body)
     ctx.body = {
       success: true,
-      data: product
+      data: body
     }
   } catch (e) {
     ctx.body = {
@@ -91,12 +91,13 @@ export async function delProduct (ctx, next) {
   }
 
   try {
-    await api.product.delProduct(_id)
+    let result = await api.product.delProduct(_id)
     ctx.body = {
       success: true,
-      data: product
+      data: result
     }
   } catch (e) {
+    console.log(e)
     ctx.body = {
       success: false,
       err: e

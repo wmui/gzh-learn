@@ -31,5 +31,46 @@ export default {
     const { data } = await axios.get(`${baseUrl}/wiki/house/${id}`)
     state.currentHouse = data.data
     return data
+  },
+
+  async fetchProducts ({ state }) {
+    const { data } = await axios.get(`${baseUrl}/shop/products`)
+
+    state.products = data.data
+
+    return data
+  },
+
+  async showProduct ({ state }, _id) {
+    if (_id === state.currentProduct._id) return
+
+    const {data} = await axios.get(`${baseUrl}/shop/product/${id}`)
+    state.currentProduct = data.data
+
+    return data
+  },
+
+
+  async saveProduct ({ state, dispatch }, product) {
+    // console.log(product)
+    const { data } = await axios.post('/shop/product', product)
+
+    const res= await dispatch('fetchProducts')
+    return res.data
+  },
+
+  async patchProduct ({ state, dispatch }, product) {
+    // console.log('patchProduct')
+    const { data } = await axios.patch('/shop/product', product)
+    console.log(data)
+    let res = await dispatch('fetchProducts')
+    return res.data
+  },
+
+  async deleteProduct ({ state, dispatch }, product) {
+    const { data } = await axios.delete(`${baseUrl}/shop/product/${product._id}`)
+    console.log(data)
+    let res = await dispatch('fetchProducts')
+    return res.data
   }
 }

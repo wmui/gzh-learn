@@ -25,11 +25,12 @@ export async function saveProduct (product) {
 }
 
 export async function updateProduct (product) {
-  product = await product.save()
-  return product
+  let { _id } = product
+  let result = await Product.findByIdAndUpdate(_id, product).exec()
+  return result
 }
 
-export async function delProduct (product) {
-  await product.remove()
-  return true
+export async function delProduct (_id) {
+  let result = await Product.findByIdAndRemove(_id).exec()
+  return result
 }

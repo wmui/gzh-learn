@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import fs from 'fs'
 import { resolve } from 'path'
 import R from 'ramda'
+import bodyParser from 'koa-bodyparser'
 import config from './config'
 import wechatMiddle from './wechat/middleware'
 import reply from './wechat/reply'
@@ -89,15 +90,16 @@ router.get('/wiki/character/:_id', wiki.getCharacter)
  * product api
  */
 router.get('/shop/products', product.getProducts)
-router.get('/shop/product/_id', product.getProduct)
+router.get('/shop/product/:_id', product.getProduct)
 router.post('/shop/product', product.postProduct)
 router.patch('/shop/product', product.patchProduct)
-router.delete('/shop/product', product.delProduct)
+router.del('/shop/product/:_id', product.delProduct)
 
 async function start () {
   const app = new Koa()
   const host = process.env.HOST || '127.0.0.1'
   const port = process.env.PORT || 3006
+  app.use(bodyParser())
   app.use(router.routes())
   app.use(router.allowedMethods())
   let config = require('../nuxt.config.js')
