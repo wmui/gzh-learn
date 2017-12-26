@@ -44,7 +44,8 @@ export default {
   async showProduct ({ state }, _id) {
     if (_id === state.currentProduct._id) return
 
-    const {data} = await axios.get(`${baseUrl}/shop/product/${id}`)
+    const {data} = await axios.get(`${baseUrl}/shop/product/${_id}`)
+    // console.log(data)
     state.currentProduct = data.data
 
     return data
@@ -62,14 +63,14 @@ export default {
   async patchProduct ({ state, dispatch }, product) {
     // console.log('patchProduct')
     const { data } = await axios.patch('/shop/product', product)
-    console.log(data)
+    // console.log(data)
     let res = await dispatch('fetchProducts')
     return res.data
   },
 
   async deleteProduct ({ state, dispatch }, product) {
     const { data } = await axios.delete(`${baseUrl}/shop/product/${product._id}`)
-    console.log(data)
+    // console.log(data)
     let res = await dispatch('fetchProducts')
     return res.data
   }

@@ -14,11 +14,16 @@
         </thead>
         <tbody>
           <tr v-for="item in products">
-            <!-- <td>
-              <div class="img" v-for="image in item.images">
+            <td>
+              <!-- 图片上传至七牛暂时未做 -->
+              <!-- <div class="img" v-for="image in item.images">
                 <img :src="imageCDN + image + "?imageView2/1/format/jpg/q/75/imageslim"" alt="">
+              </div> -->
+              <!-- 随机图片代替 -->
+              <div class="img">
+                <img src="https://picsum.photos/200/300/?random" alt="">
               </div>
-            </td> -->
+            </td>
             <td>{{item.title}}</td>
             <td>{{item.price}}</td>
             <td v-html="item.intro"></td>
@@ -142,7 +147,7 @@ export default {
       editing: false
     }
   },
-  async created () {
+  async mounted () {
     await this.$store.dispatch('fetchProducts')
   },
   computed: mapState([
