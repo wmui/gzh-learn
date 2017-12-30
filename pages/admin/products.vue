@@ -125,6 +125,7 @@ import axios from 'axios'
 import vSnackbar from '~/components/snackbar'
 
 export default {
+  middleware: 'auth',
   layout: 'admin',
   head () {
     return {

@@ -12,7 +12,9 @@ export default () => {
       products: [],
       currentCharacter: {},
       currentHouse: {},
-      currentProduct: {}
+      currentProduct: {},
+      authUser: {},
+      user: {}
     },
     getters,
     mutations,

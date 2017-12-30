@@ -2,10 +2,20 @@
 <aside>
   <ul>
     <li><nuxt-link to='/admin/proucts'>宝贝列表</nuxt-link></li>
+    <li><a @click="logout">退出登录</a></li>
   </ul>
 </aside>
 </template>
 
+<script>
+  export default {
+    methods: {
+      async logout () {
+        await this.$store.dispatch('logout')
+      }
+    }
+  }
+</script>
 <style lang='sass'>
 aside
   width: 230px

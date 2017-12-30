@@ -6,25 +6,39 @@ import fs from 'fs'
 import { resolve } from 'path'
 import R from 'ramda'
 import bodyParser from 'koa-bodyparser'
+import session from 'koa-session'
 import config from './config'
 import wechatMiddle from './wechat/middleware'
 import reply from './wechat/reply'
+
 const router = new Router()
 const models = resolve(__dirname, './database/schema')
-
-// 同步读取文件
-fs.readdirSync(models).forEach((file) => {
-  // console.log(file)
-  return require(resolve(__dirname, `./database/schema/${file}`))
-})
-
+const sessionConfig = {
+  key: 'koa:sess',
+  maxAge: 86400000,
+  overwrite: true,
+  signed: true,
+  rolling: false
+}
 const formatData = R.map(i => {
   i._id = i.nmId
   return i
 })
 
-let wikiCharacters = require(resolve(__dirname, './database/json/completeCharacters.json'))
-let wikiHouses = require(resolve(__dirname, './database/json/completeHouses.json'))
+// 同步读取文件
+fs.readdirSync(models).forEach(file => {
+  // console.log(file)
+  return require(resolve(__dirname, `./database/schema/${file}`))
+})
+
+let wikiCharacters = require(resolve(
+  __dirname,
+  './database/json/completeCharacters.json'
+))
+let wikiHouses = require(resolve(
+  __dirname,
+  './database/json/completeHouses.json'
+))
 wikiCharacters = formatData(wikiCharacters)
 
 // 开启debug
@@ -44,17 +58,34 @@ mongoose.connection.on('open', async () => {
   console.log('数据库链接成功：', config.db)
   const WikiHouse = mongoose.model('WikiHouse')
   const WikiCharacter = mongoose.model('WikiCharacter')
+  const User = mongoose.model('User')
 
   const existWikiHouses = await WikiHouse.find({}).exec()
   const existWikiCharacters = await WikiCharacter.find({}).exec()
 
   if (!existWikiHouses.length) WikiHouse.insertMany(wikiHouses)
   if (!existWikiCharacters.length) WikiCharacter.insertMany(wikiCharacters)
+
+  let user = await User.findOne({
+    email: 'admin@qq.com'
+  }).exec()
+  // 初始化管理员数据
+  if (!user) {
+    console.log('写入管理员数据')
+    user = new User({
+      email: 'admin@qq.com',
+      password: 'admin',
+      role: 'admin'
+    })
+
+    await user.save()
+  }
 })
 
 let wechat = require('./controllers/wechat')
 let wiki = require('./controllers/wiki')
 let product = require('./controllers/product')
+let admin = require('./controllers/admin')
 
 router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
 /* router.get('/wechat', async (ctx, next) => {
@@ -95,11 +126,19 @@ router.post('/shop/product', product.postProduct)
 router.patch('/shop/product', product.patchProduct)
 router.del('/shop/product/:_id', product.delProduct)
 
+/**
+ * login logout
+ */
+router.post('/admin/login', admin.login)
+router.post('/admin/logout', admin.logout)
+
 async function start () {
   const app = new Koa()
   const host = process.env.HOST || '127.0.0.1'
   const port = process.env.PORT || 3006
+  app.keys = ['gzh']
   app.use(bodyParser())
+  app.use(session(sessionConfig, app))
   app.use(router.routes())
   app.use(router.allowedMethods())
   let config = require('../nuxt.config.js')
@@ -112,6 +151,7 @@ async function start () {
   app.use(async (ctx, next) => {
     await next()
     ctx.status = 200 // koa defaults to 404 when it sees that status is unset
+    ctx.req.session = ctx.session
     return new Promise((resolve, reject) => {
       ctx.res.on('close', resolve)
       ctx.res.on('finish', resolve)
