@@ -5,6 +5,9 @@
 </template>
 <script>
 export default {
-  middleware: 'wechat-auth'
+	middleware: 'wechat-auth',
+	mounted () {
+		console.log(this.$store.state.authUser)
+	}
 }
 </script>

@@ -43,13 +43,10 @@ export default {
     return axios.get(`${baseUrl}/wechat-signature?url=${urlName}`)
   },
 
-  getUserByOAuth ({ commit }, urlName) {
-    return axios.get(`${baseUrl}/wechat-oauth?url=${urlName}`)
+  async getUserByOAuth ({ commit }, urlName) {
+    const { data } = await axios.get(`${baseUrl}/wechat-oauth?url=${urlName}`)
+    return data
   },
-
-  /* getWechatOAuth ({ commit }, urlName) {
-    return axios.get(`${baseUrl}/wechat-oauth?url=${encodeURIComponent(urlName)}`)
-  }, */
 
   async fetchCharacters ({ state }) {
     const { data } = await axios.get(`${baseUrl}/wiki/characters`)
