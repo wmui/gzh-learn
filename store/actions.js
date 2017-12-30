@@ -47,6 +47,10 @@ export default {
     return axios.get(`${baseUrl}/wechat-oauth?url=${urlName}`)
   },
 
+  /* getWechatOAuth ({ commit }, urlName) {
+    return axios.get(`${baseUrl}/wechat-oauth?url=${encodeURIComponent(urlName)}`)
+  }, */
+
   async fetchCharacters ({ state }) {
     const { data } = await axios.get(`${baseUrl}/wiki/characters`)
     state.characters = data.data
@@ -99,14 +103,14 @@ export default {
 
   async patchProduct ({ state, dispatch }, product) {
     // console.log('patchProduct')
-    const { data } = await axios.patch(`${baseUrl}/shop/product`, product)
+    await axios.patch(`${baseUrl}/shop/product`, product)
     // console.log(data)
     let res = await dispatch('fetchProducts')
     return res.data
   },
 
   async deleteProduct ({ state, dispatch }, product) {
-    const { data } = await axios.delete(`${baseUrl}/shop/product/${product._id}`)
+    await axios.delete(`${baseUrl}/shop/product/${product._id}`)
     // console.log(data)
     let res = await dispatch('fetchProducts')
     return res.data

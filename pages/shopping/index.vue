@@ -19,7 +19,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  head() {
+  head () {
     return {
       title: '手办商城'
     }
@@ -33,7 +33,7 @@ export default {
   },
 
   methods: {
-    showProduct(item) {
+    showProduct (item) {
       this.$router.push({
         path: '/detail',
         query: {
@@ -43,7 +43,8 @@ export default {
     }
   },
 
-  async mounted() {
+  async mounted () {
+    console.log(this.$route.fullPath)
     await this.$store.dispatch('fetchProducts')
   }
 }

@@ -1,4 +1,6 @@
 import { getWechat, getOAuth } from '../wechat'
+import mongoose from 'mongoose'
+const User = mongoose.model('User')
 const client = getWechat()
 const oauth = getOAuth()
 
@@ -21,6 +23,35 @@ export function getAuthorizeURL (...args) {
 
 export async function getUserByCode (code) {
   const data = await oauth.fetchAccessToken(code)
+  // const user = await oauth.getUserInfo(data.access_token, data.unionid)
   const user = await oauth.getUserInfo(data.access_token, data.openid)
-  return user
+
+  const existUser = await User.findOne({
+    openid: data.openid
+  }).exec()
+  // 用户同意授权后，保存信息到数据库
+  if (!existUser) {
+    let newUser = new User({
+      openid: [data.openid],
+      unionid: data.unionid,
+      nickname: user.nickname,
+      province: user.province,
+      country: user.country,
+      city: user.city,
+      headimgurl: user.headimgurl,
+      sex: user.sex
+    })
+
+    await newUser.save()
+  }
+
+  return {
+    nickname: user.nickname,
+    province: user.province,
+    country: user.country,
+    city: user.city,
+    unionid: user.unionid,
+    headimgurl: user.headimgurl,
+    sex: user.sex
+  }
 }

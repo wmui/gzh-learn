@@ -102,11 +102,11 @@ router.all('/wechat-hear', wechatMiddle(config.wechat, reply))
 // 客户端发起了js sdk调用
 router.get('/wechat-signature', wechat.signature)
 
-// 发起登录请求  http://wmuigzh.free.ngrok.cc/wechat-redirect?visit=1&id=2
+// 发起登录请求  http://ngrok.86886.wang/wechat-redirect?visit=1&id=2
+// 用户同意登录后，后端会执行重定向到http://ngrok.86886.wang/oauth
 router.get('/wechat-redirect', wechat.redirect)
 
-// 用户同意登录后，后端会执行重定向到http://wmuigzh.free.ngrok.cc/oauth
-// 前端在此刻向wechat-oauth发送请求，拿到用户信息
+// 前端向wechat-oauth发送请求，拿到用户信息
 router.get('/wechat-oauth', wechat.oauth)
 
 /**

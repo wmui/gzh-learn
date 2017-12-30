@@ -1,55 +1,44 @@
 <template>
-  <section class="container">
-    <img src="../assets/img/logo.png" alt="Nuxt.js Logo" class="logo" />
-    <h1 class="title">
-      This page is loaded from the {{ name }}
-    </h1>
-    <h2 class="info" v-if="name === 'client'">
-      Please refresh the page
-    </h2>
-    <nuxt-link class="button" to="/">
-      Home page
-    </nuxt-link>
-  </section>
 </template>
 <script>
-import { mapState} from 'vuex'
+// 这个页面时后端进行的重定向
+function getUrlParam (param) {
+  const reg = new RegExp('(^|&)' + param + '=([^&]*)(&|$)')
+  const result = window.location.search.substr(1).match(reg)
+
+  return result ? decodeURIComponent(result[2]) : null
+}
+
 export default {
-  asyncData ({ req }) {
-    return {
-      name: req ? 'server' : 'client'
-    }
-  },
   head () {
     return {
-      title: `测试`
+      title: `loading`
     }
   },
-  beforeMount() {
+
+  async beforeMount () {
+    const urlName = window.location.href
+    const { data } = await this.$store.dispatch('getUserByOAuth', urlName)
+    console.log(data)
+
+    if (data.success) {
+      this.$store.commit('setAuthUser', data.data)
+      const paramsArr = getUrlParam('state').split('_')
+      const visit = paramsArr.length === 1 ? `/${paramsArr[0]}` : `/${paramsArr[0]}?id=${paramsArr[1]}`
+
+      this.$router.replace(visit)
+    } else {
+      throw new Error('用户信息获取失败')
+    }
+  },
+
+  /* beforeMount () {
     const url = window.location.href
     this.$store.dispatch('getUserByOAuth', url).then(res => {
-      if(res.data.success) {
+      if (res.data.success) {
         console.log(res.data)
       }
     })
-  }
+  } */
 }
 </script>
-
-<style scoped>
-.title
-{
-  margin-top: 50px;
-}
-.info
-{
-  font-weight: 300;
-  color: #9aabb1;
-  margin: 0;
-  margin-top: 10px;
-}
-.button
-{
-  margin-top: 50px;
-}
-</style>

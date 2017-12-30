@@ -38,10 +38,10 @@ export async function oauth (ctx, next) {
   const params = queryParse(urlObj.query)
   const code = params.code
   const user = await api.wechat.getUserByCode(code)
-
+  // 状态持久化
+  ctx.session.user = user
   ctx.body = {
     success: true,
     data: user
   }
 }
-

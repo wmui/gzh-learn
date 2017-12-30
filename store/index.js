@@ -13,8 +13,8 @@ export default () => {
       currentCharacter: {},
       currentHouse: {},
       currentProduct: {},
-      authUser: {},
-      user: {}
+      authUser: null,
+      user: null
     },
     getters,
     mutations,
