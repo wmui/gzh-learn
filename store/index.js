@@ -14,7 +14,8 @@ export default () => {
       currentHouse: {},
       currentProduct: {},
       authUser: null,
-      user: null
+      user: null,
+      payments: []
     },
     getters,
     mutations,

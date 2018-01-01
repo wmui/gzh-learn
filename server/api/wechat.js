@@ -22,14 +22,16 @@ export function getAuthorizeURL (...args) {
 }
 
 export async function getUserByCode (code) {
+  // 通过code换token
   const data = await oauth.fetchAccessToken(code)
+  // 如果是多个平台绑定授权，要使用unionid
   // const user = await oauth.getUserInfo(data.access_token, data.unionid)
   const user = await oauth.getUserInfo(data.access_token, data.openid)
 
+  // 用户信息拿到后，保存到数据库
   const existUser = await User.findOne({
     openid: data.openid
   }).exec()
-  // 用户同意授权后，保存信息到数据库
   if (!existUser) {
     let newUser = new User({
       openid: [data.openid],
@@ -41,7 +43,6 @@ export async function getUserByCode (code) {
       headimgurl: user.headimgurl,
       sex: user.sex
     })
-
     await newUser.save()
   }
 
@@ -50,6 +51,7 @@ export async function getUserByCode (code) {
     province: user.province,
     country: user.country,
     city: user.city,
+    openid: [user.openid],
     unionid: user.unionid,
     headimgurl: user.headimgurl,
     sex: user.sex

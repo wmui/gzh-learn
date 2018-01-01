@@ -3,7 +3,7 @@ export async function login (ctx, next) {
   const { email, password } = ctx.request.body
   const data = await api.admin.login(email, password)
   const { user, match } = data
-  console.log(data)
+  // console.log(data)
   if (match) {
     if (user.role !== 'admin') {
       return (ctx.body = {
@@ -41,5 +41,13 @@ export async function logout (ctx, next) {
 
   ctx.body = {
     success: true
+  }
+}
+
+export async function payments (ctx, next) {
+  const data = await api.payment.fetchPayments()
+  ctx.body = {
+    success: true,
+    data: data
   }
 }

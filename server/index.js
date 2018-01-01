@@ -104,11 +104,14 @@ router.get('/wechat-signature', wechat.signature)
 
 // 发起登录请求  http://ngrok.86886.wang/wechat-redirect?visit=1&id=2
 // 用户同意登录后，后端会执行重定向到http://ngrok.86886.wang/oauth
+// 前端跳转到oauth后，向wechat-oauth发送请求，拿到用户信息
 router.get('/wechat-redirect', wechat.redirect)
 
 // 前端向wechat-oauth发送请求，拿到用户信息
 router.get('/wechat-oauth', wechat.oauth)
 
+// 支付订单
+router.post('/wechat-pay', wechat.wechatPay)
 /**
  * wiki api
  */
@@ -131,6 +134,7 @@ router.del('/shop/product/:_id', product.delProduct)
  */
 router.post('/admin/login', admin.login)
 router.post('/admin/logout', admin.logout)
+router.get('/admin/payments', admin.payments)
 
 async function start () {
   const app = new Koa()

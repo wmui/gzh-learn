@@ -1,8 +1,9 @@
 <template>
 </template>
 <script>
-// 这个页面时后端进行的重定向
-// http://wmuigzh.free.ngrok.cc/oauth?code=071UxIyb1tgA9u0RJFxb18NMyb1UxIyJ&state=user
+// 这个页面是微信进行的重定向，能进入到这里说明用户同意了授权
+// http://ngrok.86886.wang/oauth?code=071UxIyb1tgA9u0RJFxb18NMyb1UxIyJ&state=user
+// 这个组件的作用就是获取用户信息并重定向，比如你在user页面触发了授权，那么就重定向到user页面
 
 export default {
   head () {
@@ -13,13 +14,12 @@ export default {
 
   async beforeMount () {
     const urlName = window.location.href
+    // 拿到用户信息
     const data = await this.$store.dispatch('getUserByOAuth', urlName)
-    console.log(data)
+    // console.log(data)
 
     if (data.success) {
       this.$store.commit('SET_AUTHUSER', data.data)
-      // 当进入user路由时，如果未授权，那么路由重定向时把user携带到重定向地址上
-      // 微信在进行二跳时，会把这些参数加到url中，我们就可以把授权通过后跳转带user页面
       let path
       const paramsArr = urlName.split('state=')
       const getParams = paramsArr[paramsArr.length - 1]
